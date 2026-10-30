@@ -115,6 +115,7 @@
   let busy = false;
   async function go(url, push) {
     if (busy) return; busy = true;
+    const from = location.href;
     const page = get(url).catch(() => null);
     if (!reduced) { curtain.classList.remove('leave'); void curtain.offsetWidth; curtain.classList.add('cover'); await wait(620); }
     const text = await page;
@@ -133,6 +134,7 @@
     const h = new URL(url, location.href).hash;
     if (h && document.querySelector(h)) document.querySelector(h).scrollIntoView(); else scrollTo(0, 0);
     prepare(); setupMarquee(); markNav();
+    if (window.goatcounter && goatcounter.count) goatcounter.count({ referrer: from });  // visita na navegação sem recarregar
     if (!reduced) { curtain.classList.remove('cover'); curtain.classList.add('leave'); await wait(720); curtain.classList.remove('leave'); }
     busy = false;
   }
