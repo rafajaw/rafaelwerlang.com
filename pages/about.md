@@ -15,4 +15,4 @@ I'm also a licensed attorney in Brazil (OAB/SP). I read the legal spec and the c
 
 ## Contact
 
-[email@rafaelwerlang.com](mailto:email@rafaelwerlang.com) · [GitHub](https://github.com/rafajaw)
+[dm@rafaelwerlang.com](mailto:dm@rafaelwerlang.com) · [GitHub](https://github.com/rafajaw)

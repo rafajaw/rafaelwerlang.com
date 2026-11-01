@@ -21,7 +21,7 @@ SITE = {
     'description': 'Notes on protocol design, MEV, zero-knowledge and the security of AI agents.',
     'author': 'Rafael Werlang',
     'github': 'https://github.com/rafajaw',
-    'email': 'email@rafaelwerlang.com',
+    'email': 'dm@rafaelwerlang.com',
 }
 
 
