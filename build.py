@@ -189,11 +189,11 @@ def render(template, **kw):
     return re.sub(r'\{\{\s*(\w+)\s*\}\}', lambda m: str(kw.get(m.group(1), '')), template)
 
 
-def page(title, description, path, main, kind='page', og_type='website', env='home'):
+def page(title, description, path, main, kind='page', og_type='website', env='home', og_image='/og.png'):
     full = f'{title} — {SITE["title"]}' if title != SITE['title'] else SITE['title']
     return render(tpl('base.html'), title=html.escape(full), description=html.escape(description),
                   url=SITE['url'] + path, site=html.escape(SITE['title']), tagline=html.escape(SITE['tagline']),
-                  github=SITE['github'], email=SITE['email'], main=main, kind=kind, og_type=og_type, env=env,
+                  github=SITE['github'], email=SITE['email'], main=main, kind=kind, og_type=og_type, env=env, og_image=SITE['url'] + og_image,
                   year=datetime.now().year)
 
 
@@ -241,7 +241,8 @@ def build(drafts=False):
                       share=share_bar(p),
                       toc=f'<nav class="toc" aria-label="Contents"><ol>{toc}</ol></nav>' if len(p['toc']) > 2 else '',
                       draft='<p class="draft-badge">Draft — not published</p>' if p['draft'] else '', env=p['env'])
-        write(f'/posts/{p["slug"]}/', page(p['title'], p.get('description', ''), f'/posts/{p["slug"]}/', main, 'post', 'article', p['env']))
+        og = f'/og/{p["slug"]}.png' if os.path.exists(os.path.join(ROOT, 'static', 'og', p['slug'] + '.png')) else '/og.png'
+        write(f'/posts/{p["slug"]}/', page(p['title'], p.get('description', ''), f'/posts/{p["slug"]}/', main, 'post', 'article', p['env'], og))
 
     items = ''.join(render(tpl('card.html'), slug=p['slug'], title=html.escape(p['title']),
                            description=html.escape(p.get('description', '')), date=fmt_date(p['date']),
