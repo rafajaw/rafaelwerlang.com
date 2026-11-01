@@ -10,7 +10,7 @@ I'm also a licensed attorney in Brazil (OAB/SP). I read the legal spec and the c
 ## What I build
 
 - **BondRoute** — an immutable staked commit-reveal primitive against front-running, live on 14 EVM networks. [github.com/rafajaw/BondRoute](https://github.com/rafajaw/BondRoute)
-- **Asserte** — AI legal-document audit, multi-model review panel. [asserte.ai](https://asserte.ai)
+- **Asserte** — before you send it, Asserte it: the leading AI models read your document independently and challenge each other's findings. [asserte.ai](https://asserte.ai)
 - **g0blin** — Windows binary instrumentation for anonymous functions: hooks internal, unexported functions in stripped binaries and finds them by the data flowing through them. [github.com/rafajaw/g0blin](https://github.com/rafajaw/g0blin)
 
 ## Contact
