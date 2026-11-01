@@ -34,7 +34,32 @@
     if (el.dataset.rolled) return; el.dataset.rolled = '1';
     const txt = el.textContent; el.setAttribute('aria-label', txt); el.textContent = '';
     [...txt].forEach((ch, k) => { const s = document.createElement('span'); s.className = 'r'; s.textContent = ch; s.dataset.c = ch; s.style.setProperty('--d', k); s.setAttribute('aria-hidden', 'true'); el.append(s); });
+    // cada letra mede a largura da versão itálica e a caixa acompanha durante a rolagem (sem letras grudadas)
+    const on = () => fitRoll(el, true), off = () => fitRoll(el, false);
+    el.addEventListener('mouseenter', on); el.addEventListener('focus', on);
+    el.addEventListener('mouseleave', off); el.addEventListener('blur', off);
+    measureRoll(el);
   }
+  function measureRoll(el) {
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0';
+    el.append(probe);
+    el.querySelectorAll('.r').forEach(r => {
+      r.style.width = '';
+      r.dataset.up = r.getBoundingClientRect().width;
+      probe.textContent = r.dataset.c;
+      r.dataset.it = probe.getBoundingClientRect().width;
+      r.style.width = r.dataset.up + 'px';
+    });
+    probe.remove();
+    if (el.matches(':hover, :focus')) fitRoll(el, true);
+  }
+  function fitRoll(el, rolled) {
+    el.querySelectorAll('.r').forEach(r => { if (r.dataset.up) r.style.width = (rolled ? r.dataset.it : r.dataset.up) + 'px'; });
+  }
+  const remeasure = () => document.querySelectorAll('.roll[data-rolled]').forEach(measureRoll);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(remeasure, 150); });
   // palavras da declaração acendem conforme a rolagem
   function words(el) {
     if (el.dataset.words) return; el.dataset.words = '1';

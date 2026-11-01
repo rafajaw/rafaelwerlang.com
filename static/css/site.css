@@ -87,7 +87,7 @@ main { width: 100%; }
 
 /* texto que "rola" no hover: cada letra sobe e dá lugar à mesma letra em itálico serifado */
 .roll { position: relative; display: inline-block; overflow: hidden; vertical-align: bottom; }
-.roll .r { position: relative; display: inline-block; white-space: pre; transition: transform .7s var(--out); transition-delay: calc(var(--d, 0) * 12ms); }
+.roll .r { position: relative; display: inline-block; white-space: pre; transition: transform .7s var(--out), width .7s var(--out); transition-delay: calc(var(--d, 0) * 12ms); }
 .roll .r::after { content: attr(data-c); position: absolute; left: 0; top: 100%; font-family: var(--serif); font-style: italic; letter-spacing: 0; }
 .roll:hover .r { transform: translateY(-100%); }
 
