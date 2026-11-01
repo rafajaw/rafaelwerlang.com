@@ -1,5 +1,5 @@
 ---
-title: A $197 million button and a $500 million clause
+title: What a $197M hack and a $500M lawsuit have in common
 description: A $197 million hack and a $500 million lawsuit broke the same way. What lawyers know about the 5% nobody plans for, and why legal documents deserve the audit smart contracts get.
 tags: smart contracts, law, security, ai
 draft: false
