@@ -26,7 +26,7 @@ Different reasons, same job. The traditional contract must close every gap becau
 
 This is where the professions split.
 
-A software engineer is trained to make things work. The focus is the happy path: the expected input, the user who behaves, the flow from the spec. That's not a flaw. It's the job.
+A software engineer is trained to make things work. The focus is the happy path: the expected input, the user who behaves, the flow from the spec. That's not a flaw. It's the job. Vibe coding pushes it further: when the code comes from a prompt, the happy path is all anyone checks. It runs, the demo works, ship it. Nobody asks what happens when someone calls it in the wrong order.
 
 Euler's donate button is what that looks like. Whoever built it pictured a generous user giving part of their deposit to the protocol. Every other button checked that your loan was still covered after you used it. This one didn't, because why would anyone donate their way into a bad loan?
 
