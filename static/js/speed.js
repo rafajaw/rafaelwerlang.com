@@ -190,3 +190,33 @@
   // leaving the page (SPA navigation or history) closes the reader
   addEventListener('popstate', close);
 })();
+
+// ---- share bar: copy link (with fallback) and native share where the device has it
+(() => {
+  const label = (b, txt) => { const o = b.dataset.o || (b.dataset.o = b.textContent); b.textContent = txt; b.classList.add('is-done'); clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = o; b.classList.remove('is-done'); }, 1800); };
+  const reveal = () => { if (navigator.share) document.querySelectorAll('.share-native').forEach(b => { b.hidden = false; }); };
+  reveal(); new MutationObserver(reveal).observe(document.documentElement, { childList: true, subtree: true });
+  document.addEventListener('click', async e => {
+    const c = e.target.closest('[data-copy]');
+    if (c) {
+      const url = c.dataset.copy;
+      try { await navigator.clipboard.writeText(url); label(c, 'Copied'); }
+      catch (err) {
+        const ta = document.createElement('textarea'); ta.value = url; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.append(ta); ta.select();
+        let ok = false; try { ok = document.execCommand('copy'); } catch (x) {}
+        ta.remove(); label(c, ok ? 'Copied' : url);
+      }
+      try { window.goatcounter && window.goatcounter.count({ path: 'share-copy' + location.pathname, title: 'Copy link', event: true }); } catch (x) {}
+      return;
+    }
+    const n = e.target.closest('[data-native]');
+    if (n && navigator.share) {
+      const t = document.querySelector('#app .post-title');
+      try { await navigator.share({ title: t ? (t.getAttribute('aria-label') || t.textContent.trim()) : document.title, url: n.dataset.native }); } catch (x) {}
+      return;
+    }
+    const a = e.target.closest('.share a.share-b');
+    if (a) { try { window.goatcounter && window.goatcounter.count({ path: 'share-' + a.textContent.trim().toLowerCase() + location.pathname, title: 'Share', event: true }); } catch (x) {} }
+  });
+})();

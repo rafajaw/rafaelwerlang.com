@@ -212,3 +212,12 @@ main { width: 100%; }
 @media (max-width: 700px) { .speed-ctl { justify-content: center; } .speed-left { width: 100%; text-align: center; } .speed-hint { bottom: 4%; } }
 .post-meta > a { white-space: nowrap; }
 @media (max-width: 700px) { .post-meta > span { text-align: right; } .speed-btn { margin-top: .5rem; } }
+
+/* ---- share bar (end of post) ---- */
+.share { max-width: var(--w); margin: 3rem auto 0; padding-left: var(--pad); padding-right: var(--pad); box-sizing: content-box;
+         display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1.4rem; }
+.share-k { margin-right: .4rem; }
+.share-b { font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--ink); background: none; border: 1px solid var(--rule);
+           border-radius: 999px; padding: .4rem .85rem; cursor: pointer; text-decoration: none; transition: border-color .2s, background .2s, color .2s; }
+.share-b:hover, .share-b:focus-visible { border-color: var(--ink); outline: none; }
+.share-b.is-done { background: var(--ink); color: var(--bg); border-color: var(--ink); }

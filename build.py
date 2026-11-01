@@ -173,6 +173,18 @@ def tpl(name):
     return open(os.path.join(ROOT, 'templates', name), encoding='utf-8').read()
 
 
+def share_bar(p):
+    from urllib.parse import quote
+    url = f"{SITE['url']}/posts/{p['slug']}/"
+    t = quote(p['title']); u = quote(url, safe='')
+    return ('<nav class="share mono" aria-label="Share this post"><span class="share-k">Share</span>'
+            f'<button type="button" class="share-b" data-copy="{url}">Copy link</button>'
+            f'<a class="share-b" href="https://x.com/intent/post?text={t}&amp;url={u}" target="_blank" rel="noopener">X</a>'
+            f'<a class="share-b" href="https://www.linkedin.com/sharing/share-offsite/?url={u}" target="_blank" rel="noopener">LinkedIn</a>'
+            f'<a class="share-b" href="https://news.ycombinator.com/submitlink?u={u}&amp;t={t}" target="_blank" rel="noopener">HN</a>'
+            f'<a class="share-b" href="mailto:?subject={t}&amp;body={u}">Email</a>'
+            f'<button type="button" class="share-b share-native" data-native="{url}" hidden>More…</button></nav>')
+
 def render(template, **kw):
     return re.sub(r'\{\{\s*(\w+)\s*\}\}', lambda m: str(kw.get(m.group(1), '')), template)
 
@@ -226,6 +238,7 @@ def build(drafts=False):
         toc = ''.join(f'<li class="l{n}"><a href="#{sid}">{body}</a></li>' for n, sid, body in p['toc'])
         main = render(tpl('post.html'), title=html.escape(p['title']), description=html.escape(p.get('description', '')), date=fmt_date(p['date']), iso=p['date'],
                       minutes=p['minutes'], tags=tags, content=p['content'], slug=p['slug'],
+                      share=share_bar(p),
                       toc=f'<nav class="toc" aria-label="Contents"><ol>{toc}</ol></nav>' if len(p['toc']) > 2 else '',
                       draft='<p class="draft-badge">Draft — not published</p>' if p['draft'] else '', env=p['env'])
         write(f'/posts/{p["slug"]}/', page(p['title'], p.get('description', ''), f'/posts/{p["slug"]}/', main, 'post', 'article', p['env']))
