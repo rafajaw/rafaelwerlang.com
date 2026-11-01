@@ -175,9 +175,11 @@ main { width: 100%; }
 /* ---- speed read (RSVP) — static/js/speed.js ---- */
 :root { --hot: #ff4a2b; }
 .speed-btn { display: none; font: inherit; color: var(--ink); background: none; border: 1px solid var(--rule); border-radius: 999px; padding: .15rem .7rem; margin-left: .6rem; cursor: pointer; letter-spacing: inherit; text-transform: inherit; }
-.js .speed-btn { display: inline-block; }
+.js .speed-btn { display: inline-flex; }
 .speed-btn:hover, .speed-btn:focus-visible { border-color: var(--ink); }
-.speed-btn i { font-style: normal; color: var(--hot); }
+.speed-btn { align-items: center; gap: .45rem; }
+.speed-btn .speed-ico { width: .62rem; height: .85rem; flex: none; transition: transform .5s var(--out); }
+.speed-btn:hover .speed-ico { transform: scaleY(1.25); }
 .speed-open, .speed-open body { overflow: hidden; }
 .speed { position: fixed; inset: 0; z-index: 1000; background: var(--bg); color: var(--ink); display: grid; grid-template-rows: auto 1fr auto auto;
          padding: calc(env(safe-area-inset-top, 0px) + 1rem) max(var(--pad), env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 1.2rem) max(var(--pad), env(safe-area-inset-left, 0px));
