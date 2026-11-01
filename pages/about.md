@@ -11,7 +11,7 @@ I'm also a licensed attorney in Brazil (OAB/SP). I read the legal spec and the c
 
 - **BondRoute** — an immutable staked commit-reveal primitive against front-running, live on 14 EVM networks. [github.com/rafajaw/BondRoute](https://github.com/rafajaw/BondRoute)
 - **Asserte** — AI legal-document audit, multi-model review panel. [asserte.ai](https://asserte.ai)
-- **g0blin** — a Windows binary instrumentation engine for the functions nobody named. Detours and Frida assume you already know which function to hook; g0blin hooks internal, unexported, unnamed functions in stripped binaries, and finds them by the data flowing through them: give it a filename or string the program handles, and it returns the address of the anonymous function that touched it. [github.com/rafajaw/g0blin](https://github.com/rafajaw/g0blin)
+- **g0blin** — Windows binary instrumentation for anonymous functions: hooks internal, unexported functions in stripped binaries and finds them by the data flowing through them. [github.com/rafajaw/g0blin](https://github.com/rafajaw/g0blin)
 
 ## Contact
 
