@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A move learned in one language model works in another — Rafael Werlang</title>
+<meta name="description" content="Four separately trained language models arrange meaning alike, and a transformation measured in one, carried through a single linear map, works in another about 13 times better than a generic push. Not a silver bullet, but far from nothing. Plus a confound in a public backdoor model zoo.">
+<link rel="canonical" href="https://rafaelwerlang.com/posts/shared-transformations/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A move learned in one language model works in another — Rafael Werlang">
+<meta property="og:description" content="Four separately trained language models arrange meaning alike, and a transformation measured in one, carried through a single linear map, works in another about 13 times better than a generic push. Not a silver bullet, but far from nothing. Plus a confound in a public backdoor model zoo.">
+<meta property="og:url" content="https://rafaelwerlang.com/posts/shared-transformations/">
+<meta property="og:image" content="https://rafaelwerlang.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="alternate" type="application/rss+xml" title="Rafael Werlang" href="/rss.xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/InterTight.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+<script src="/js/speed.js" defer></script>
+<script data-goatcounter="https://rafaelwerlang.goatcounter.com/count" src="/js/count.js" async></script>
+</head>
+<body data-kind="post">
+<a class="skip" href="#app">Skip to content</a>
+<header class="top mono">
+  <a class="brand" href="/">Rafael Werlang</a>
+  <nav class="nav">
+    <a href="/">Index</a>
+    <a href="/about/">About</a>
+    <a href="https://github.com/rafajaw" rel="noopener" target="_blank">GitHub</a>
+    <a href="/rss.xml">RSS</a>
+  </nav>
+</header>
+<main id="app" data-kind="post">
+<article class="post">
+  <header class="post-hero">
+    <p class="post-meta mono"><a href="/">← Index</a><span><time datetime="2026-11-19">Nov 19, 2026</time> · 3 min read<button type="button" class="speed-btn" data-speed aria-label="Speed read this post"><svg class="speed-ico" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 0v4.5M6 11.5V16" stroke="currentColor" stroke-width="1.4"/><circle cx="6" cy="8" r="1.9" fill="var(--hot)"/></svg>Speed read</button></span></p>
+    
+    <h1 class="post-title split">A move learned in one language model works in another</h1>
+    <p class="post-desc"><em>Four separately trained language models arrange meaning alike, and a transformation measured in one, carried through a single linear map, works in another about 13 times better than a generic push. Not a silver bullet, but far from nothing. Plus a confound in a public backdoor model zoo.</em></p>
+    <div class="tags mono"><span class="tag">ai</span><span class="tag">interpretability</span><span class="tag">security</span><span class="tag">research</span></div>
+  </header>
+  <nav class="toc" aria-label="Contents"><ol><li class="l2"><a href="#the-moves-are-arranged-alike">The moves are arranged alike</a></li><li class="l2"><a href="#and-a-move-carries-over">And a move carries over</a></li><li class="l2"><a href="#where-it-stopped">Where it stopped</a></li><li class="l2"><a href="#a-finding-on-the-way">A finding on the way</a></li><li class="l2"><a href="#what-i-take-from-it">What I take from it</a></li></ol></nav>
+  <div class="prose">
+<p>On the outside, a language model is just a next-token predictor. Different companies train them on different data, with different architectures. There is no reason, in principle, for their insides to look alike.</p>
+<p>They do. That much was known for concepts: different models place words in similar ways. I wanted to know something stronger. Do they also share the <em>moves</em> between meanings, like plural, opposite, or capital of? And if they do, can a move measured in one model be used in another?</p>
+<p>I tested it on four 7–8B models from four families (Mistral, Qwen, OLMo, Granite), always against an untrained copy of the same network as a floor.</p>
+<h2 id="the-moves-are-arranged-alike"><a class="anchor" href="#the-moves-are-arranged-alike" aria-hidden="true">#</a>The moves are arranged alike</h2>
+<p><strong>Concepts first.</strong> Three models measured, similarity 0.90–0.93; untrained copies near zero.</p>
+<p><strong>Then the moves.</strong> For about twenty word transformations, the pattern of how the moves relate to each other agrees across all four families, 0.94–0.97, with no map between the models at all. Four companies, four training runs, the same arrangement.</p>
+<p>One trap on the way. The obvious way to build these "task vectors" still carries the words of the examples. "Opposite" always uses adjectives, "capital of" always uses country names, so any network that groups tasks by their words will look like it shares them, even an untrained one: random networks agreed almost as well (0.81–0.93) as the trained models. The fix is to subtract the same examples with their answers shuffled ("hot: low", "tall: cold"): same words, no relation. Then the untrained networks drop to near zero, and the trained models still agree at 0.94–0.97. If you read a claim that models share task vectors, ask whether it had that control.</p>
+<h2 id="and-a-move-carries-over"><a class="anchor" href="#and-a-move-carries-over" aria-hidden="true">#</a>And a move carries over</h2>
+<p>Take a move measured in one model, pass it through one linear map fitted on unrelated text, add it to the other model's state on a bare question, and check the first word of the answer:</p>
+<ul><li>nothing added: right 1% of the time;</li><li>a generic push: 4%;</li><li>the wrong move, carried: 5%;</li><li><strong>the carried move: 52%;</strong></li><li>the target's own move: 84%.</li></ul>
+<p>About 13 times the generic push, and 62% of what the model gets from its own version. In nearly half of the cases, the carried move reached at least three quarters of the target's own effect. A refusal direction carried too: removing the carried direction made two different models comply with harmful requests, getting most of the way (63–100%) to removing their own.</p>
+<p>It is not a silver bullet. The best numbers use some help from the target model (its own scale, its own generic push), and only the first word is scored. But a move learned in one model working in another, through a single linear map, is not nothing.</p>
+<h2 id="where-it-stopped"><a class="anchor" href="#where-it-stopped" aria-hidden="true">#</a>Where it stopped</h2>
+<p><strong>A backdoor's fingerprint did not carry across families.</strong> The best case came within 0.01 of the bar I set and no further, even with maps that fit well. And a candidate "damage" direction that passed one test failed a broader one: it labelled half of unpleasant-but-intact changes as damage. So did each model's own version, which points at how the direction was extracted rather than at the transfer.</p>
+<h2 id="a-finding-on-the-way"><a class="anchor" href="#a-finding-on-the-way" aria-hidden="true">#</a>A finding on the way</h2>
+<p>To test backdoor detection fairly, I first used a public model zoo of backdoored and clean adapters. Its released metadata shows every poisoned adapter trained for 4 epochs and every clean one for 2. A trivial statistic, how much the weights changed, then separates them perfectly. Any detector evaluated on that zoo may be detecting training length, not backdoors. I trained my own matched pairs instead, identical except for the poison, and the trivial statistic stopped working.</p>
+<h2 id="what-i-take-from-it"><a class="anchor" href="#what-i-take-from-it" aria-hidden="true">#</a>What I take from it</h2>
+<p>Models trained apart converge on the same geometry of meaning, and part of what one model does can be moved into another with one linear map. Safety work that finds a behaviour in one model has a real, if partial, path to the others. What did not carry yet is the part I would most like to: the subtle fingerprint of a planted backdoor, so that one found in one model could be looked for in another.</p>
+<p>Paper: <a href="/papers/llmi-preprint.pdf">PDF</a>. Code, results and checkers that re-derive most of the numbers: <a href="https://github.com/rafajaw/llmi" rel="noopener" target="_blank">github.com/rafajaw/llmi</a>.</p>
+  </div>
+  <nav class="share mono" aria-label="Share this post"><span class="share-k">Share</span><button type="button" class="share-b" data-copy="https://rafaelwerlang.com/posts/shared-transformations/">Copy link</button><a class="share-b" href="https://x.com/intent/post?text=A%20move%20learned%20in%20one%20language%20model%20works%20in%20another&amp;url=https%3A%2F%2Frafaelwerlang.com%2Fposts%2Fshared-transformations%2F" target="_blank" rel="noopener">X</a><a class="share-b" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frafaelwerlang.com%2Fposts%2Fshared-transformations%2F" target="_blank" rel="noopener">LinkedIn</a><a class="share-b" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frafaelwerlang.com%2Fposts%2Fshared-transformations%2F&amp;t=A%20move%20learned%20in%20one%20language%20model%20works%20in%20another" target="_blank" rel="noopener">HN</a><a class="share-b" href="mailto:?subject=A%20move%20learned%20in%20one%20language%20model%20works%20in%20another&amp;body=https%3A%2F%2Frafaelwerlang.com%2Fposts%2Fshared-transformations%2F">Email</a><button type="button" class="share-b share-native" data-native="https://rafaelwerlang.com/posts/shared-transformations/" hidden>More…</button></nav>
+  <nav class="post-end"><a class="mega-link roll" href="/" data-text="Back to the index">Back to the index</a></nav>
+</article>
+
+</main>
+<footer class="foot">
+  <p class="foot-label mono">Write to me</p>
+  <a class="foot-mail roll" href="mailto:dm@rafaelwerlang.com" data-text="dm@rafaelwerlang.com">dm@rafaelwerlang.com</a>
+  <div class="foot-row mono"><span>© 2026 Rafael Werlang</span><span class="clock">Pescara</span><a href="#app" class="totop">Top ↑</a></div>
+</footer>
+<div class="curtain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+</body>
+</html>
