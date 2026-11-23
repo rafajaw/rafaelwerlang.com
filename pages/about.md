@@ -1,6 +1,6 @@
 ---
 title: About
-description: Rafael Werlang — protocol and AI-agent security engineer, licensed attorney (OAB, Brazil).
+description: Rafael Werlang — AI security engineer building LLM agents, interpretability research and verifiable inference. Licensed attorney (OAB, Brazil).
 ---
 
 I work from the machine level up to the protocol level: x86 reverse engineering and binary instrumentation, Solidity/EVM protocol design deployed on 14 chains, zero-knowledge light clients, and production LLM-agent systems hardened against prompt injection.
@@ -9,8 +9,9 @@ I'm also a licensed attorney in Brazil (OAB/SP). I read the legal spec and the c
 
 ## What I build
 
+- **LLMi** — research on what different AI models share inside: the same internal patterns for meaning across separately trained model families, and a public backdoor benchmark that can be told apart by training recipe alone. [github.com/rafajaw/llmi](https://github.com/rafajaw/llmi) · [the post](/posts/shared-transformations/)
 - **BondRoute** — an immutable staked commit-reveal primitive against front-running, live on 14 EVM networks. [github.com/rafajaw/BondRoute](https://github.com/rafajaw/BondRoute)
-- **Asserte** — before you send it, Asserte it: the leading AI models read your document independently and challenge each other's findings. [asserte.ai](https://asserte.ai)
+- **Asserte** — before you send it, Asserte it: AI review of contracts and high-stakes documents, where the leading AI models read your document independently and challenge each other's findings. [asserte.ai](https://asserte.ai)
 - **g0blin** — Windows binary instrumentation for anonymous functions: hooks internal, unexported functions in stripped binaries and finds them by the data flowing through them. [github.com/rafajaw/g0blin](https://github.com/rafajaw/g0blin)
 
 ## Contact
