@@ -5,7 +5,7 @@ description: Rafael Werlang — AI security engineer building LLM agents, interp
 
 I work from the machine level up to the protocol level: x86 reverse engineering and binary instrumentation, Solidity/EVM protocol design deployed on 14 chains, zero-knowledge light clients, and production LLM-agent systems hardened against prompt injection.
 
-I'm also a licensed attorney in Brazil (OAB/SP). I read the legal spec and the code, and look for where they disagree.
+I'm also a licensed attorney in Brazil (OAB/SP). Same skill: model the edge cases and close them before anyone else finds them.
 
 ## What I build
 
